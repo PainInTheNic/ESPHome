@@ -1,0 +1,121 @@
+substitutions:
+  device_name: victron-bluetooth-proxy
+  device_friendly_name: Victron Bluetooth Proxy
+  device_description: Victron Bluetooth Proxy for Home Assistant.
+  victron_mac_address: ''
+  victron_bindkey: ''
+
+external_components:
+  - source: github://Fabian-Schmidt/esphome-victron_ble
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${device_friendly_name}
+  comment: ${device_description}
+  name_add_mac_suffix: false
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  min_auth_mode: WPA2
+
+api:
+  encryption:
+    key: !secret api_key
+
+logger:
+  baud_rate: 0
+  level: WARN
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+  - platform: web_server
+
+web_server:
+  port: 80
+  version: 3
+  include_internal: true
+  auth:
+    username: !secret web_username
+    password: !secret web_password
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+bluetooth_proxy:
+  active: true
+  cache_services: true
+  connection_slots: 5
+
+esp32_ble:
+  max_connections: 5
+
+esp32_ble_beacon:
+  type: iBeacon
+  uuid: ''
+
+esp32_ble_tracker:
+  scan_parameters:
+    active: true
+
+victron_ble:
+  - id: SmartSolar
+    mac_address: ${victron_mac_address}
+    bindkey: ${victron_bindkey}
+
+button:
+  - platform: restart
+    id: button_restart
+    name: Restart
+
+sensor:
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Output Voltage"
+    type: BATTERY_VOLTAGE
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Output Current"
+    type: BATTERY_CURRENT
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Yield Today"
+    type: YIELD_TODAY
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar PV Power"
+    type: PV_POWER
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Load Current"
+    type: LOAD_CURRENT
+
+binary_sensor:
+  - platform: status
+    name: 'Status'
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Fault State"
+    type: DEVICE_STATE_FAULT
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Error State"
+    type: CHARGER_ERROR
+
+text_sensor:
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Device State"
+    type: DEVICE_STATE
+  - platform: victron_ble
+    victron_ble_id: SmartSolar
+    name: "Victron SmartSolar Error Cause"
+    type: CHARGER_ERROR
