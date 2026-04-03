@@ -1,7 +1,7 @@
 substitutions:
   friendly_name: Bluetooth Beacon Proxy Leveling Assistant
   device_name: bluetooth-beacon-proxy-levelingassistant
-  device_description: Bluetooth Beacon Proxy Leveling Assistant for RV.
+  device_description: Bluetooth Beacon & Proxy Leveling Assistant for Home Assistant.
 
 esphome:
   name: ${device_name}
