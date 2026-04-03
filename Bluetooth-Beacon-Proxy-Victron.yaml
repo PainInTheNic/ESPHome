@@ -1,7 +1,7 @@
 substitutions:
   device_name: bluetooth-beacon-proxy-victron
   device_friendly_name: Bluetooth Beacon Proxy Victron
-  device_description: Bluetooth Beacon Proxy with Victron support for Home Assistant.
+  device_description: Bluetooth Beacon & Proxy with Victron support for Home Assistant.
   victron_mac_address: ''
   victron_bindkey: ''
 
