@@ -1,7 +1,7 @@
 substitutions:
-  device_name: bluetooth-proxy
-  device_friendly_name: Bluetooth Proxy
-  device_description: Bluetooth Proxy for Home Assistant.
+  device_name: bluetooth-beacon-proxy
+  device_friendly_name: Bluetooth Beacon Proxy
+  device_description: Bluetooth Beacon & Proxy for Home Assistant.
 
 esphome:
   name: ${device_name}
