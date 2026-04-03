@@ -1,0 +1,63 @@
+substitutions:
+  friendly_name: Bluetooth Proxy
+  device_name: bluetooth-proxy
+  device_description: Bluetooth Proxy for Home Assistant.
+
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+
+esp32:
+  board: m5stack-atom
+  framework:
+    type: esp-idf
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  use_address: '${device_name}.local'
+  fast_connect: on
+  min_auth_mode: WPA2
+
+logger:
+  baud_rate: 0
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+  - platform: web_server
+
+web_server:
+  port: 80
+  version: 3
+  include_internal: true
+  auth:
+    username: !secret web_username
+    password: !secret web_password
+
+bluetooth_proxy:
+  active: true
+  cache_services: true
+  connection_slots: 5
+
+esp32_ble:
+  max_connections: 5
+
+button:
+  - platform: restart
+    id: button_restart
+    name: Restart
+
+i2c:
+  sda: GPIO25
+  scl: GPIO21
+  scan: true
+  id: bus_a
+
+binary_sensor:
+  - platform: status
+    name: 'Status'
